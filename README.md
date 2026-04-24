@@ -164,6 +164,7 @@ This project demonstrates backend development skills including:
 * System reliability
 
 ---
+<img width="1521" height="842" alt="image" src="https://github.com/user-attachments/assets/b603454a-8500-4a6a-9992-bc68ffea63fa" />
 
 ## 👨‍💻 Author
 
