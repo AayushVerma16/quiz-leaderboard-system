@@ -2,20 +2,20 @@
 
 ## 📌 Overview
 
-This project is a backend application that processes quiz data from an external API, removes duplicate entries, calculates participant scores, and generates a leaderboard.
+This project is a backend system that processes quiz data from an external API, handles duplicate responses, and generates an accurate leaderboard.
 
-The system simulates a real-world distributed backend problem where API responses may contain duplicate data across multiple calls.
+It simulates a real-world distributed system scenario where API responses may be repeated or unreliable, requiring robust data handling and retry mechanisms.
 
 ---
 
 ## 🎯 Objective
 
 * Poll the API 10 times
-* Handle duplicate data correctly
+* Handle duplicate response data correctly
 * Aggregate scores per participant
 * Generate a sorted leaderboard
-* Compute total score
-* Submit the result to the server
+* Compute total score across all users
+* Submit final result to the API
 
 ---
 
@@ -28,43 +28,56 @@ The system simulates a real-world distributed backend problem where API response
 
 ---
 
-## 🔄 Workflow
+## 📡 API Details
 
-1. **API Polling**
+**Base URL:**
 
-   * API is called 10 times (`poll=0` to `poll=9`)
-   * 5-second delay between each call
+```
+https://devapigw.vidalhealthtpa.com/srm-quiz-task
+```
 
-2. **Data Collection**
+**Endpoints:**
 
-   * All responses are collected from API
-
-3. **Deduplication (Core Logic)**
-
-   * Unique key: `roundId + participant`
-   * Duplicate entries are ignored
-
-4. **Score Aggregation**
-
-   * Scores are summed per participant
-
-5. **Leaderboard Generation**
-
-   * Sorted in descending order of total score
-
-6. **Total Score Calculation**
-
-   * Sum of all participants' scores
-
-7. **Submission**
-
-   * Final leaderboard is submitted via POST API
+* `GET /quiz/messages?regNo=XXX&poll=0-9`
+* `POST /quiz/submit`
 
 ---
 
-## 🧠 Key Logic (Important)
+## 🔄 System Workflow
 
-Duplicate handling:
+1. **API Polling**
+
+   * Executes 10 API calls (poll 0 → 9)
+   * Maintains delay between calls
+
+2. **Data Collection**
+
+   * Collects all events from each API response
+
+3. **Deduplication (Core Logic)**
+
+   * Uses a unique key:
+
+     ```
+     roundId + participant
+     ```
+   * Ensures duplicate entries are ignored
+
+4. **Score Aggregation**
+
+   * Accumulates scores per participant
+
+5. **Leaderboard Generation**
+
+   * Sorts participants by total score (descending)
+
+6. **Final Submission**
+
+   * Sends leaderboard to submission API
+
+---
+
+## 🧠 Core Logic (Deduplication)
 
 ```java
 String key = roundId + "_" + participant;
@@ -78,15 +91,17 @@ if (!uniqueSet.contains(key)) {
 
 ---
 
-## 🔁 Retry Handling (Real-World Enhancement)
+## 🔁 Retry Strategy (Key Highlight ⭐)
 
-The API may fail (503 error), so retry logic is implemented:
+The API is unreliable and may return `503 Service Unavailable`.
+To handle this, a robust retry mechanism is implemented:
 
-* Up to 10 retries per poll
-* 10-second delay between retries
-* Skips poll if all retries fail
+* Up to **10 retries per poll**
+* **10-second delay** between retries
+* Skips poll only after max retries
+* Prevents infinite loops
 
-This ensures robustness similar to production systems.
+This mimics real-world backend resilience patterns.
 
 ---
 
@@ -103,32 +118,36 @@ Total Score: 835
 
 ---
 
-## 📡 Submission Response
+## 📸 Output Screenshot
+
+![Output Screenshot](your-screenshot.png)
+
+---
+
+## 📦 Project Structure
 
 ```
-{
-  "submittedTotal": 835,
-  "attemptCount": 2
-}
+src/main/java/com/example/demo/
+ └── QuizApplication.java
 ```
 
 ---
 
 ## 🚀 How to Run
 
-1. Clone the repository:
+1. Clone repository:
 
 ```
-git clone https://github.com/your-username/quiz-leaderboard-system.git
+git clone https://github.com/AayushVerma16/quiz-leaderboard-system.git
 ```
 
-2. Navigate to project folder:
+2. Navigate to project:
 
 ```
 cd demo
 ```
 
-3. Run the application:
+3. Run application:
 
 ```
 ./mvnw spring-boot:run
@@ -138,34 +157,32 @@ cd demo
 
 ## ⚠️ Challenges Faced
 
-* Handling duplicate API data
-* Managing API failures (503 errors)
+* Handling duplicate API responses
+* Managing intermittent API failures (503 errors)
 * Implementing retry logic without infinite loops
-* Ensuring accurate aggregation
+* Ensuring consistent data aggregation
 
 ---
 
-## 💡 Learnings
+## 💡 Key Learnings
 
-* Working with real-world APIs
-* Handling unreliable external systems
-* Backend data processing and aggregation
-* Writing clean and maintainable logic
-
----
-
-## 📌 Conclusion
-
-This project demonstrates backend development skills including:
-
-* API integration
-* Data processing
-* Error handling
-* System reliability
+* Building resilient backend systems
+* Handling unreliable external APIs
+* Data deduplication techniques
+* Clean and efficient aggregation logic
 
 ---
-<img width="1521" height="842" alt="image" src="https://github.com/user-attachments/assets/b603454a-8500-4a6a-9992-bc68ffea63fa" />
+
+## 🚀 Highlights
+
+* Robust retry mechanism for unstable APIs
+* Efficient duplicate handling using hashing
+* Clean leaderboard generation logic
+* Real-world backend problem simulation
+
+---
+<img width="1522" height="887" alt="image" src="https://github.com/user-attachments/assets/3d0bb636-9afe-4128-9c87-89c86cf26b37" />
 
 ## 👨‍💻 Author
 
-Aayush Verma
+**Aayush Verma**
