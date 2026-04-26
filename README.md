@@ -120,7 +120,7 @@ Total Score: 835
 
 ## 📸 Output Screenshot
 
-![Output Screenshot](your-screenshot.png)
+<img width="1522" height="887" alt="image" src="https://github.com/user-attachments/assets/3d0bb636-9afe-4128-9c87-89c86cf26b37" />
 
 ---
 
@@ -181,7 +181,6 @@ cd demo
 * Real-world backend problem simulation
 
 ---
-<img width="1522" height="887" alt="image" src="https://github.com/user-attachments/assets/3d0bb636-9afe-4128-9c87-89c86cf26b37" />
 
 ## 👨‍💻 Author
 
